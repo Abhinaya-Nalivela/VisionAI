@@ -1,0 +1,70 @@
+VISION AI - 6 CLASS MODEL EVALUATION
+=================================================================
+
+Experiment Purpose
+-----------------------------------------------------------------
+Evaluate global image-quality classification without using localized synthetic defects as a Random Forest class.
+
+Excluded ML class: defect
+Potential visual defects will be evaluated separately using localized image analysis if this experiment performs better.
+
+Model: RandomForestClassifier
+Model Version: 3.0-6class
+Feature Count: 18
+Training Samples: 1296
+Testing Samples: 324
+Classes: ['blur', 'clean', 'degraded', 'noise', 'overexposed', 'underexposed']
+
+OVERALL METRICS
+-----------------------------------------------------------------
+Accuracy: 0.8889
+Balanced Accuracy: 0.8889
+Macro F1: 0.8868
+Weighted F1: 0.8868
+
+CLASSIFICATION REPORT
+-----------------------------------------------------------------
+              precision    recall  f1-score   support
+
+        blur     0.9455    0.9630    0.9541        54
+       clean     0.8409    0.6852    0.7551        54
+    degraded     0.9444    0.9444    0.9444        54
+       noise     0.8545    0.8704    0.8624        54
+ overexposed     0.8136    0.8889    0.8496        54
+underexposed     0.9298    0.9815    0.9550        54
+
+    accuracy                         0.8889       324
+   macro avg     0.8881    0.8889    0.8868       324
+weighted avg     0.8881    0.8889    0.8868       324
+
+
+CONFUSION MATRIX
+-----------------------------------------------------------------
+Classes: ['blur', 'clean', 'degraded', 'noise', 'overexposed', 'underexposed']
+[[52  1  0  0  0  1]
+ [ 1 37  0  4  9  3]
+ [ 0  0 51  3  0  0]
+ [ 0  2  3 47  2  0]
+ [ 1  4  0  1 48  0]
+ [ 1  0  0  0  0 53]]
+
+FEATURE IMPORTANCE
+-----------------------------------------------------------------
+sharpness                : 0.131307
+laplacian_extreme_ratio  : 0.125789
+bright_pixel_ratio       : 0.121406
+noise_level              : 0.108481
+gradient_std             : 0.102610
+dark_pixel_ratio         : 0.077630
+brightness               : 0.054796
+local_contrast_std       : 0.037990
+gradient_mean            : 0.036933
+entropy                  : 0.035197
+strong_edge_ratio        : 0.028590
+contrast                 : 0.028261
+edge_density             : 0.025882
+extreme_pixel_ratio      : 0.024673
+local_contrast_mean      : 0.022587
+patch_intensity_range    : 0.013656
+saturation               : 0.012115
+patch_intensity_std      : 0.012097

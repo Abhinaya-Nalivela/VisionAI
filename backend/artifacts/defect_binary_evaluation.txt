@@ -1,0 +1,61 @@
+VISION AI BINARY DEFECT MODEL
+=================================================================
+
+Task:
+Binary clean vs potential visual defect detection.
+
+Training samples: 432
+Testing samples: 108
+Feature count: 25
+
+HELD-OUT TEST RESULTS
+-----------------------------------------------------------------
+Accuracy: 0.5556
+Balanced Accuracy: 0.5556
+Defect Precision: 0.5469
+Defect Recall: 0.6481
+Defect F1: 0.5932
+
+Confusion Matrix
+[[TN FP]
+ [FN TP]]
+[[25 29]
+ [19 35]]
+
+Classification Report
+              precision    recall  f1-score   support
+
+       clean     0.5682    0.4630    0.5102        54
+      defect     0.5469    0.6481    0.5932        54
+
+    accuracy                         0.5556       108
+   macro avg     0.5575    0.5556    0.5517       108
+weighted avg     0.5575    0.5556    0.5517       108
+
+
+Feature Importance
+laplacian_extreme_ratio: 0.072798
+local_anomaly_score: 0.059321
+sharpness: 0.053502
+gradient_std: 0.050619
+noise_level: 0.048124
+local_contrast_std: 0.047024
+patch_intensity_std: 0.045087
+brightness: 0.044419
+entropy: 0.043916
+gradient_mean: 0.043725
+saturation: 0.043691
+contrast: 0.043526
+local_contrast_mean: 0.043315
+strong_edge_ratio: 0.042219
+edge_density: 0.040066
+bright_pixel_ratio: 0.038582
+dark_pixel_ratio: 0.037020
+extreme_pixel_ratio: 0.033938
+patch_intensity_range: 0.030490
+neighbor_inconsistency: 0.028299
+local_sharpness_outlier: 0.027906
+local_noise_outlier: 0.026561
+local_contrast_outlier: 0.020862
+local_brightness_outlier: 0.019469
+local_edge_outlier: 0.015523

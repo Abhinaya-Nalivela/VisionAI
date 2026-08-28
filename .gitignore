@@ -1,5 +1,8 @@
+# =========================================================
 # Python
+# =========================================================
 __pycache__/
+**/__pycache__/
 *.py[cod]
 *.pyo
 *.pyd
@@ -10,38 +13,80 @@ __pycache__/
 venv/
 env/
 
-# Environment files
+# =========================================================
+# Environment files / secrets
+# =========================================================
 .env
 backend/.env
+frontend/.env
 
-# Python testing and tooling
+# Keep environment templates
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# =========================================================
+# Python testing / tooling
+# =========================================================
 .pytest_cache/
+**/.pytest_cache/
 .coverage
 htmlcov/
 .mypy_cache/
 .ruff_cache/
 
+# =========================================================
 # Backend runtime data
+# =========================================================
+backend/visionai.db
+backend/*.db
+
 backend/uploads/*
 !backend/uploads/.gitkeep
+
 backend/data/*
 !backend/data/.gitkeep
 
-# ML artifacts created locally
-backend/artifacts/*.joblib
+# =========================================================
+# Dataset
+# =========================================================
+
+# Large generated synthetic dataset
+backend/dataset/generated/
+
+# Large local KonIQ working subset
+backend/dataset/koniq_source/
+
+# We intentionally KEEP:
+# backend/dataset/source/
+# backend/dataset/koniq_selection.csv
+# sample_images/
+
+# =========================================================
+# ML temporary artifacts
+# =========================================================
 backend/artifacts/*.pkl
 backend/artifacts/*.npy
 
-# Node / frontend
+# IMPORTANT:
+# Do NOT ignore *.joblib.
+# quality_model_6class.joblib is required for inference.
+
+# =========================================================
+# Frontend
+# =========================================================
 frontend/node_modules/
 frontend/dist/
-frontend/.env
 
-# IDE and OS
+# =========================================================
+# IDE / OS
+# =========================================================
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
 
+# =========================================================
 # Logs
+# =========================================================
 *.log
