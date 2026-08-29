@@ -314,6 +314,36 @@ POTENTIALLY_DEFECTIVE
 
 ---
 
+---
+
+# Application Preview
+
+The following screenshots demonstrate the working VisionAI application, including image upload, AI-based quality analysis, detailed results, and persisted analysis history.
+
+## Image Analysis
+
+![VisionAI Analysis](docs/visionai-analysis.jpg)
+
+![VisionAI Detailed Analysis](docs/visionai-analysis2.jpeg)
+
+The analysis interface displays the uploaded image together with the predicted quality class, overall quality score, confidence, severity, detected issues, and interpretable image statistics.
+
+## Analysis History
+
+![VisionAI Analysis History](docs/visionai-history.jpeg)
+
+Previous analyses are persisted in SQLite and can be reviewed, expanded, individually deleted, or cleared from the interface.
+
+## Upload Interface
+
+![VisionAI Upload Interface](docs/visionaiupload1.jpeg)
+
+![VisionAI Image Preview](docs/visionaiupload2.jpeg)
+
+Users can upload or drag and drop a supported image, preview it, and start the quality analysis directly from the web interface.
+
+---
+
 # AI / ML Approach
 
 VisionAI uses a hybrid approach:
