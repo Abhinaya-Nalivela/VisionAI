@@ -2,6 +2,8 @@
 
 ## AI-Powered Image Quality & Defect Detection
 
+**Computer Vision + Machine Learning | FastAPI | React | SQLite | Docker**
+
 VisionAI is a full-stack AI application for automated image-quality assessment and conservative visual defect detection.
 
 The system accepts an uploaded image, extracts interpretable computer-vision features, applies a locally trained machine-learning model, and returns:
@@ -11,57 +13,86 @@ The system accepts an uploaded image, extracts interpretable computer-vision fea
 - Predicted quality class
 - Confidence
 - Severity
-- Detected issues
+- Detected quality issues
 - Image statistics
 - Analysis history
 
 VisionAI combines **Computer Vision + Machine Learning** rather than relying only on fixed image-processing thresholds.
 
-All image processing and ML inference are performed locally.
+All image processing and machine-learning inference are performed locally.
 
 **No external AI/vision API or API key is required.**
 
 ---
 
-# Quick Start - Run & Test VisionAI
+## Key Results
 
-The recommended way to evaluate VisionAI is with **Docker Compose**.
+| Item | Result |
+|---|---:|
+| Global quality classes | 6 |
+| Engineered CV features | 18 |
+| Held-out test samples | 324 |
+| Accuracy | **88.89%** |
+| Balanced Accuracy | **88.89%** |
+| Macro F1 | **88.68%** |
+| Weighted F1 | **88.68%** |
+| Primary model | Random Forest |
+| External AI APIs | None |
+| Deployment | Docker Compose |
 
-Docker runs the complete application:
+The six global quality classes are:
 
 ```text
-React Frontend
-      +
-FastAPI Backend
-      +
-Random Forest Model
-      +
-SQLite Database
+blur
+clean
+degraded
+noise
+overexposed
+underexposed
 ```
+
+Potential localized defects are handled separately through a conservative anomaly-warning mechanism described later in this README.
+
+---
+
+# Quick Start — Run & Test VisionAI
+
+Docker Compose is the recommended way to evaluate the complete project.
 
 ## Prerequisites
 
 Install:
 
+- Git
 - Docker Desktop
-- Docker Compose
+
+Docker Desktop includes Docker Compose on supported installations.
+
+---
 
 ## 1. Clone the Repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone https://github.com/Abhinaya-Nalivela/VisionAI.git
 cd VisionAI
 ```
 
-> Replace `<YOUR_GITHUB_REPOSITORY_URL>` with the final repository URL before submission.
+---
 
 ## 2. Build the Application
-
-From the project root:
 
 ```bash
 docker compose build
 ```
+
+This builds:
+
+- FastAPI backend
+- React/Vite frontend
+- Python ML runtime
+- Trained Random Forest model inside the backend image
+
+---
 
 ## 3. Start the Application
 
@@ -70,6 +101,8 @@ docker compose up
 ```
 
 Wait until the frontend and backend containers are running.
+
+---
 
 ## 4. Open the Application
 
@@ -85,7 +118,7 @@ http://localhost:5173
 http://localhost:8001
 ```
 
-### FastAPI Documentation
+### FastAPI Interactive Documentation
 
 ```text
 http://localhost:8001/docs
@@ -107,9 +140,11 @@ Expected response:
 }
 ```
 
+---
+
 ## 5. Test the Application
 
-Representative images are included in:
+Representative test images are included in:
 
 ```text
 sample_images/
@@ -129,13 +164,17 @@ degraded.jpg
 To test through the frontend:
 
 1. Open `http://localhost:5173`
-2. Upload an image from `sample_images/`
-3. Preview the image
+2. Select or drag an image from `sample_images/`
+3. Preview the selected image
 4. Click **Analyze Image**
-5. Review the quality assessment
+5. Review the quality score, label, confidence, severity, issues, and statistics
 6. View the saved result in **Analysis History**
 
+---
+
 ## 6. Stop the Application
+
+Press `Ctrl+C` if Compose is running in the foreground, then run:
 
 ```bash
 docker compose down
@@ -177,18 +216,18 @@ Analysis history is stored in a persistent Docker volume and survives normal con
 | Image Decoding       |
 +----------+-----------+
            |
-     +-----+-----+
-     |           |
-     v           v
-+---------+  +-------------+
-|Computer |  |Random Forest|
-| Vision  |  | ML Model    |
-|Features |  | Prediction  |
-+----+----+  +------+------+
-     |              |
-     +------+-------+
-            |
-            v
+      +----+----+
+      |         |
+      v         v
++-----------+  +-------------+
+| Computer  |  | Random      |
+| Vision    |  | Forest      |
+| Features  |  | ML Model    |
++-----+-----+  +------+------+
+      |               |
+      +-------+-------+
+              |
+              v
 +----------------------+
 |   Decision Engine    |
 |                      |
@@ -207,18 +246,18 @@ Analysis history is stored in a persistent Docker volume and survives normal con
 | Statistics           |
 +----------+-----------+
            |
-     +-----+-----+
-     |           |
-     v           v
-+---------+  +-------------+
-| React   |  | SQLite      |
-| Results |  | History     |
-+---------+  +-------------+
+      +----+----+
+      |         |
+      v         v
++-----------+  +-------------+
+| React     |  | SQLite      |
+| Results   |  | History     |
++-----------+  +-------------+
 ```
 
 The **Random Forest model is the primary learned global quality classifier**.
 
-Computer-vision measurements provide interpretable features and supporting evidence for the final decision.
+Computer-vision measurements provide interpretable input features and supporting evidence for the final decision.
 
 ---
 
@@ -232,6 +271,7 @@ Computer-vision measurements provide interpretable features and supporting evide
 | Machine Learning | scikit-learn, Random Forest, Joblib, pandas |
 | Database | SQLite, SQLAlchemy |
 | Deployment | Docker, Docker Compose |
+| Testing | pytest |
 
 ---
 
@@ -243,13 +283,13 @@ VisionAI supports:
 - Drag-and-drop upload
 - JPG, JPEG, PNG, and WEBP images
 - Maximum upload size of 10 MB
-- AI-based quality classification
+- AI-based image-quality classification
 - Blur detection
 - Underexposure detection
 - Overexposure detection
 - Noise detection
 - Severe degradation detection
-- Conservative potential visual defect detection
+- Conservative potential visual-defect detection
 - Quality score from 0 to 100
 - Confidence score
 - Severity level
@@ -257,11 +297,12 @@ VisionAI supports:
 - Explainable image statistics
 - Persistent analysis history
 - Expandable history details
-- Individual history deletion
-- Clear History
+- Individual history-record deletion
+- Clear History functionality
 - REST API
 - Health endpoint
 - Docker deployment
+- Automated backend validation tests
 
 Possible final labels are:
 
@@ -303,33 +344,38 @@ Global Prediction    Supporting CV /
 
 The learned Random Forest model is responsible for the primary global image-quality prediction.
 
-Computer-vision evidence is used to:
+Computer-vision processing is used to:
 
-- Make the model input interpretable
-- Support strong degradation decisions
-- Provide image statistics
+- Generate interpretable ML input features
+- Measure image characteristics
+- Provide supporting degradation evidence
+- Expose useful statistics to the user
 - Conservatively identify unusual localized regions
 
-This ensures that the final assessment is meaningfully based on machine learning rather than only manually selected thresholds.
+This ensures that the final assessment meaningfully uses a **trained machine-learning model** rather than relying only on manually selected thresholds.
 
 ---
 
 # Why Random Forest?
 
-The model operates on engineered numerical image-quality features rather than raw pixels.
+The model operates on engineered numerical image-quality features instead of raw image pixels.
 
 Random Forest was selected because it:
 
-- Performs well on tabular numerical features
+- Performs effectively on tabular numerical features
 - Learns nonlinear relationships between features
-- Works effectively with a relatively small dataset
-- Provides feature importance
-- Has fast inference
+- Works with a relatively modest training dataset
+- Provides feature-importance information
+- Supports fast inference
 - Does not require GPU hardware
 - Is lightweight to deploy
-- Supports reproducible training
+- Supports deterministic and reproducible training
 
-This provides a practical balance between **ML capability, explainability, and deployment simplicity**.
+This provides a practical balance between:
+
+**ML capability + explainability + deployment simplicity**
+
+A large deep-learning architecture was not necessary for this assessment because the objective can be addressed effectively using interpretable CV features combined with a learned classifier.
 
 ---
 
@@ -373,17 +419,23 @@ The final global classifier uses **18 engineered image-quality features**.
 
 - Saturation
 
-The API additionally reports image width, height, and channel count for explainability.
+The API additionally reports image:
+
+- Width
+- Height
+- Channel count
+
+These measurements improve result interpretability.
 
 ---
 
 # Dataset
 
-The training data combines:
+The data-preparation workflow combines:
 
 - **250 high-quality images** selected from the public KonIQ-10k image-quality dataset
 - **20 additional source images**
-- Controlled synthetic degradations
+- Controlled synthetic degradation generation
 
 Total source images:
 
@@ -394,7 +446,7 @@ Total source images:
 270 source images
 ```
 
-KonIQ selection metadata is stored in:
+KonIQ subset-selection metadata is stored in:
 
 ```text
 backend/dataset/koniq_selection.csv
@@ -406,17 +458,21 @@ The additional source images are stored in:
 backend/dataset/source/
 ```
 
-Large generated datasets and the local KonIQ working-image directory are intentionally excluded from the repository.
+Large generated datasets and the local KonIQ working-image directory are intentionally excluded from Git to keep the repository lightweight.
 
-The scripts required to reproduce the data-generation process are included.
+The scripts required to reproduce the preparation and degradation workflow are included under:
+
+```text
+backend/ml/
+```
 
 ---
 
 # Synthetic Degradation Generation
 
-Controlled transformations were used to generate known image-quality conditions.
+Controlled transformations were used to create known image-quality conditions.
 
-Generated categories included:
+Generated categories include:
 
 - Clean
 - Blur
@@ -426,7 +482,7 @@ Generated categories included:
 - Degraded
 - Synthetic visual defect
 
-The final global classifier uses six classes:
+The final global model is trained on six classes:
 
 ```text
 blur
@@ -437,7 +493,7 @@ overexposed
 underexposed
 ```
 
-Synthetic transformations provide known labels while allowing controlled evaluation of common image-quality problems.
+Synthetic degradation provides known labels while allowing controlled evaluation of common image-quality problems.
 
 Dataset generation is implemented in:
 
@@ -451,19 +507,19 @@ backend/ml/generate_dataset.py
 
 The dataset is split at the **source-image level before synthetic degradations are generated**.
 
-This prevents different degraded versions of the same original image from appearing in both training and testing data.
+This is important because it prevents degraded versions of the same original image from appearing in both the training and testing sets.
 
 The deterministic split uses:
 
 ```text
-Random seed: 42
+Random seed:       42
 
-Total source images: 270
-Training sources:    216
-Testing sources:      54
+Total sources:     270
+Training sources:  216
+Testing sources:    54
 ```
 
-For the six-class global model:
+For the final six-class global model:
 
 ```text
 Training samples: 1296
@@ -473,7 +529,9 @@ Training samples per class: 216
 Testing samples per class:   54
 ```
 
-This provides a more meaningful evaluation on degradations generated from **unseen source images** and reduces data leakage.
+The held-out test degradations therefore originate from **source images unseen during training**.
+
+This reduces source-level leakage and provides a more meaningful generalization test.
 
 ---
 
@@ -494,7 +552,7 @@ Training script:
 backend/ml/train.py
 ```
 
-Final trained model:
+Final model:
 
 ```text
 backend/artifacts/quality_model_6class.joblib
@@ -516,13 +574,13 @@ backend/artifacts/evaluation_report_6class.txt
 
 # Model Evaluation
 
-The final model was evaluated on:
+The final six-class model was evaluated using:
 
 ```text
 324 held-out test samples
 ```
 
-generated from the 54 test source images that were not used for training.
+generated from the **54 source images that were excluded from training**.
 
 ## Overall Metrics
 
@@ -544,15 +602,19 @@ generated from the 54 test source images that were not used for training.
 | Overexposed | 81.36% | 88.89% | 84.96% |
 | Underexposed | 92.98% | 98.15% | 95.50% |
 
-The strongest performance is observed for blur, severe degradation, and underexposure.
+The strongest performance is observed for:
 
-The clean class is more challenging because some moderately degraded images can have feature distributions similar to clean images.
+- Blur
+- Severe degradation
+- Underexposure
+
+The clean class is more challenging because some moderately degraded images can have feature distributions similar to otherwise acceptable images.
 
 ---
 
 # Feature Importance and Explainability
 
-Random Forest feature importance provides insight into which image characteristics contribute most strongly to classification.
+Random Forest feature importance provides insight into which image characteristics contribute strongly to classification.
 
 Some of the strongest learned features include:
 
@@ -572,7 +634,7 @@ These correspond to meaningful image characteristics such as:
 - Edge structure
 - High-frequency detail
 
-The frontend also displays:
+The frontend additionally displays:
 
 - Quality score
 - Quality label
@@ -582,26 +644,26 @@ The frontend also displays:
 - Detected issues
 - Image statistics
 
-This makes the result more interpretable than returning only a class label.
+This provides more interpretability than returning only a predicted class.
 
 ---
 
 # Potential Visual Defect Detection
 
-Localized defects were investigated separately from global image-quality degradation.
+Localized visual defects were investigated separately from global quality degradation.
 
 Two experimental approaches were evaluated:
 
 1. Patch-based local anomaly scoring
-2. Binary Random Forest defect classification using global and local features
+2. Binary Random Forest defect classification using global and localized features
 
 The patch-based approach produced limited held-out defect recall.
 
-The experimental binary classifier detected some defects but produced too many false positives on clean images.
+The experimental binary Random Forest detected some defects but generated too many false positives on clean images.
 
 Because these approaches did not generalize reliably enough, they were **not promoted to the primary AI classifier**.
 
-The final system therefore uses localized anomaly information only as a **conservative supporting warning signal**.
+The final application therefore keeps localized anomaly information as a **conservative supporting warning signal**.
 
 A potential defect warning is considered only when:
 
@@ -609,24 +671,24 @@ A potential defect warning is considered only when:
 - No strong global degradation signal exists
 - Local anomaly evidence is unusually high
 
-Therefore:
+> Potential visual-defect detection should therefore be interpreted as a conservative localized anomaly warning rather than a fully validated industrial defect classifier.
 
-> Potential visual defect detection should be interpreted as a conservative localized anomaly warning, not as a fully validated industrial defect classifier.
-
-Experimental reports are retained at:
+Experimental evaluation reports are retained at:
 
 ```text
 backend/artifacts/local_defect_evaluation.txt
 backend/artifacts/defect_binary_evaluation.txt
 ```
 
+Keeping these experiments in the repository documents both successful and unsuccessful modelling approaches instead of hiding negative evaluation results.
+
 ---
 
 # Final Decision Logic
 
-The final decision follows four simple cases.
+The final decision follows four cases.
 
-### 1. ML-Detected Degradation
+## 1. ML-Detected Degradation
 
 If the Random Forest predicts:
 
@@ -638,29 +700,45 @@ noise
 degraded
 ```
 
-the image is labeled:
+the final label is:
 
 ```text
 DEGRADED
 ```
 
-### 2. Strong CV Evidence
+The Random Forest remains the primary decision source for these global quality conditions.
 
-If the ML model predicts clean but very strong computer-vision degradation evidence exists, the result can be overridden to:
+---
+
+## 2. Strong CV Evidence
+
+If the ML model predicts clean but very strong computer-vision evidence indicates a global quality problem, the system can override the clean prediction and return:
 
 ```text
 DEGRADED
 ```
 
-### 3. Conservative Localized Anomaly
+This acts as a conservative supporting safety rule.
 
-If the image is strongly predicted as globally clean, has weak global degradation evidence, but contains an unusually strong localized anomaly, the system may return:
+---
+
+## 3. Conservative Localized Anomaly
+
+If the image:
+
+- Is strongly predicted as globally clean
+- Has no strong global degradation evidence
+- Contains unusually strong localized anomaly evidence
+
+the system may return:
 
 ```text
 POTENTIALLY_DEFECTIVE
 ```
 
-### 4. Acceptable
+---
+
+## 4. Acceptable
 
 Otherwise:
 
@@ -668,7 +746,7 @@ Otherwise:
 ACCEPTABLE
 ```
 
-The ML model remains the primary global decision mechanism.
+The trained Random Forest therefore remains the **primary learned global decision mechanism**, while CV and local anomaly measurements act as supporting evidence.
 
 ---
 
@@ -682,11 +760,13 @@ Base address:
 http://localhost:8001
 ```
 
-Interactive API documentation:
+Interactive documentation:
 
 ```text
 http://localhost:8001/docs
 ```
+
+---
 
 ## Health Check
 
@@ -694,19 +774,35 @@ http://localhost:8001/docs
 GET /health
 ```
 
+Example response:
+
+```json
+{
+  "status": "ok",
+  "service": "VisionAI API",
+  "version": "1.0.0"
+}
+```
+
+---
+
 ## Analyze Image
 
 ```http
 POST /api/analyze
 ```
 
+The endpoint accepts an image using multipart form data.
+
 Example:
 
 ```bash
-curl -X POST -F "file=@sample_images/clean.jpg" http://localhost:8001/api/analyze
+curl -X POST \
+  -F "file=@sample_images/clean.jpg" \
+  http://localhost:8001/api/analyze
 ```
 
-Example response structure:
+Example response:
 
 ```json
 {
@@ -717,11 +813,20 @@ Example response structure:
   "confidence": 0.9567,
   "severity": "LOW",
   "issues": [],
-  "probabilities": {},
+  "probabilities": {
+    "blur": 0.0,
+    "clean": 0.9567,
+    "degraded": 0.0033,
+    "noise": 0.0033,
+    "overexposed": 0.0333,
+    "underexposed": 0.0033
+  },
   "image_statistics": {},
   "analysis_id": 1
 }
 ```
+
+---
 
 ## Analysis History
 
@@ -729,17 +834,21 @@ Example response structure:
 GET /api/history
 ```
 
-Optional limit:
+Optional result limit:
 
 ```text
 /api/history?limit=20
 ```
 
-## Delete History Record
+---
+
+## Delete a History Record
 
 ```http
 DELETE /api/history/{analysis_id}
 ```
+
+---
 
 ## Clear History
 
@@ -747,7 +856,7 @@ DELETE /api/history/{analysis_id}
 DELETE /api/history
 ```
 
-All endpoints can also be tested through:
+All endpoints can also be explored and tested through:
 
 ```text
 http://localhost:8001/docs
@@ -772,25 +881,27 @@ Analysis records store information including:
 - Confidence
 - Severity
 - Issues
-- Probabilities
+- Model probabilities
 - Image statistics
 - Creation time
 
-For local execution, the database is automatically created at:
+For normal local execution, SQLite automatically creates:
 
 ```text
 backend/visionai.db
 ```
 
-No external database server is required.
+when the backend starts.
 
-When using Docker Compose:
+The runtime database is intentionally excluded from Git.
+
+No external database server or manual database setup is required.
+
+When using Docker Compose, the backend uses:
 
 ```text
 DATABASE_PATH=/app/data/visionai.db
 ```
-
-is used.
 
 The database is stored in the Docker named volume:
 
@@ -804,17 +915,17 @@ so analysis history survives normal container recreation.
 
 # Model Loading and Inference After Deployment
 
-The trained Random Forest model is stored at:
+The final trained Random Forest model is stored at:
 
 ```text
 backend/artifacts/quality_model_6class.joblib
 ```
 
-The model artifact is packaged inside the backend Docker image.
+The artifact is included inside the backend Docker image.
 
-When FastAPI starts, the model service automatically loads the serialized Joblib model and validates the expected feature configuration and model classes.
+When the FastAPI backend starts, the model service loads the serialized Joblib model and validates its expected feature configuration and classes.
 
-For every uploaded image:
+For each uploaded image:
 
 ```text
 Upload
@@ -856,7 +967,7 @@ No external AI service is contacted during inference.
 
 # Sample Images
 
-Representative examples are provided in:
+Representative examples are included in:
 
 ```text
 sample_images/
@@ -871,13 +982,13 @@ sample_images/
 | `noise.jpg` | Noise |
 | `degraded.jpg` | Severe degradation |
 
-These samples provide a quick way for an examiner to test different quality conditions through the deployed application.
+These files provide an examiner with a quick way to test different image-quality conditions immediately after deployment.
 
 ---
 
 # Input Validation and Error Handling
 
-The backend accepts:
+Supported upload formats:
 
 ```text
 JPG
@@ -899,9 +1010,50 @@ The API validates uploaded data before ML inference and handles:
 - Invalid image data
 - Unreadable images
 - Missing history records
-- Analysis errors
+- Analysis failures
 
 Appropriate HTTP status codes and structured error responses are returned.
+
+---
+
+# Automated Backend Tests
+
+Basic automated validation is included under:
+
+```text
+backend/tests/
+```
+
+The current pytest tests validate:
+
+- Computer-vision feature extraction on a real sample image
+- Required engineered feature availability
+- Model loading
+- ML inference
+- Expected model classes
+- Confidence/probability ranges
+
+Run the tests from the backend directory:
+
+```bash
+cd backend
+python -m pytest -q
+```
+
+Expected current result:
+
+```text
+2 passed
+```
+
+The localized-anomaly evaluation script is retained separately because it performs experimental statistical analysis rather than a simple unit-test assertion.
+
+Future test expansion could include:
+
+- FastAPI integration tests
+- Database endpoint tests
+- React component tests
+- End-to-end browser tests
 
 ---
 
@@ -924,7 +1076,9 @@ VisionAI/
 |   |   |-- feature_metadata_6class.json
 |   |   |-- evaluation_report_6class.txt
 |   |   |-- local_defect_evaluation.txt
-|   |   `-- defect_binary_evaluation.txt
+|   |   |-- defect_binary_evaluation.txt
+|   |   |-- train_features.csv
+|   |   `-- test_features.csv
 |   |
 |   |-- dataset/
 |   |   |-- source/
@@ -964,6 +1118,10 @@ VisionAI/
 `-- .dockerignore
 ```
 
+> `backend/visionai.db` is created automatically during local execution and is intentionally not committed to the repository.
+
+Generated degradation datasets and the local KonIQ working-image directory are also excluded from Git because they can be recreated using the included ML scripts.
+
 ---
 
 # Reproducing the ML Pipeline
@@ -974,22 +1132,26 @@ ML utilities are located in:
 backend/ml/
 ```
 
-The main scripts are:
+Main scripts:
 
 | Script | Purpose |
 |---|---|
-| `prepare_koniq_subset.py` | Prepare the selected public dataset subset |
-| `generate_dataset.py` | Generate controlled degradation samples |
-| `build_features.py` | Extract model features |
-| `train.py` | Train and evaluate the final Random Forest |
+| `prepare_koniq_subset.py` | Prepare the selected public-dataset subset |
+| `generate_dataset.py` | Generate controlled image degradations |
+| `build_features.py` | Extract the engineered model features |
+| `train.py` | Train and evaluate the final six-class Random Forest |
 | `evaluate_local_defect.py` | Evaluate localized anomaly detection |
-| `train_defect_binary.py` | Experimental binary defect classifier |
+| `train_defect_binary.py` | Evaluate the experimental binary defect classifier |
 
-The final trained model is already included in the repository, so reproducing training is **not required to run the application**.
+The final trained model is already committed to the repository.
+
+Therefore, **retraining is not required to run or evaluate the application**.
+
+The stored artifacts also allow the training and evaluation process to be inspected independently of runtime inference.
 
 ---
 
-# Local Development - Optional
+# Local Development — Optional
 
 Docker Compose is the recommended evaluation method.
 
@@ -997,36 +1159,50 @@ For development without Docker:
 
 ## Backend
 
-Create a virtual environment:
+From the project root, create a virtual environment:
 
-```powershell
+```bash
 python -m venv .venv
 ```
 
-Activate it:
+### Windows PowerShell
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
 
-Install dependencies:
+Install backend dependencies:
 
-```powershell
-pip install -r .\backend\requirements.txt
+```bash
+pip install -r backend/requirements.txt
 ```
 
 Start the backend:
 
-```powershell
+```bash
 cd backend
 uvicorn app.main:app --host 0.0.0.0 --port 8001
 ```
 
+Backend:
+
+```text
+http://localhost:8001
+```
+
+API documentation:
+
+```text
+http://localhost:8001/docs
+```
+
+---
+
 ## Frontend
 
-Open another terminal:
+Open another terminal from the project root:
 
-```powershell
+```bash
 cd frontend
 npm install
 npm run dev
@@ -1042,20 +1218,20 @@ http://localhost:5173
 
 # Known Limitations
 
-VisionAI is a technical assessment project rather than a production industrial inspection system.
+VisionAI is a technical assessment project rather than a production industrial inspection platform.
 
 Current limitations include:
 
-- The global model is trained primarily on controlled synthetic degradations.
-- Real-world distortion distributions may differ from the training data.
+- The global model is trained primarily using controlled synthetic degradations.
+- Real-world distortion distributions may differ from the synthetic training distribution.
 - The clean class is more difficult to distinguish than several degradation classes.
 - Moderately overexposed images can occasionally overlap with clean feature distributions.
 - Localized defect detection is conservative and experimental.
 - Small or subtle defects may not trigger a potential-defect warning.
 - Random Forest confidence values have not undergone dedicated probability calibration.
-- A larger real-world annotated defect dataset would be required for production-grade defect detection.
+- Production-grade defect detection would require a larger real-world annotated defect dataset.
 
-These limitations are documented to avoid overstating the model's capabilities.
+These limitations are intentionally documented to avoid overstating the model's capability.
 
 ---
 
@@ -1074,7 +1250,8 @@ The project supports reproducibility through:
 - Training scripts
 - Dockerized backend and frontend
 - Docker Compose configuration
-- Documented limitations
+- Automated backend tests
+- Documented limitations and negative experimental results
 
 Important artifacts include:
 
@@ -1082,6 +1259,8 @@ Important artifacts include:
 backend/artifacts/quality_model_6class.joblib
 backend/artifacts/feature_metadata_6class.json
 backend/artifacts/evaluation_report_6class.txt
+backend/artifacts/local_defect_evaluation.txt
+backend/artifacts/defect_binary_evaluation.txt
 backend/artifacts/train_features.csv
 backend/artifacts/test_features.csv
 ```
@@ -1103,10 +1282,73 @@ The application does **not** require:
 
 No external AI API key is required.
 
+Uploaded images are processed by the application's own backend and local model.
+
+---
+
+# Deployment Status
+
+The project is designed to run completely outside the original development environment through Docker Compose.
+
+The repository includes:
+
+```text
+docker/backend.Dockerfile
+docker/frontend.Dockerfile
+docker-compose.yml
+```
+
+The Docker deployment provides:
+
+- Frontend container
+- Backend container
+- Packaged trained model
+- Environment-configurable SQLite path
+- Persistent database volume
+- Health endpoint
+- Correct frontend/backend port exposure
+
+Local Docker Compose deployment is the primary supported deployment method.
+
+A public cloud URL is not required to run or evaluate the project.
+
+---
+
+# Assessment Coverage
+
+VisionAI demonstrates an end-to-end implementation of:
+
+```text
+Image Upload
+     |
+     v
+Computer Vision Feature Extraction
+     |
+     v
+Machine Learning Classification
+     |
+     v
+Explainable Quality Decision
+     |
+     v
+FastAPI REST API
+     |
+     v
+SQLite Persistence
+     |
+     v
+React User Interface
+     |
+     v
+Dockerized Deployment
+```
+
+The implementation prioritizes a **robust, explainable, reproducible, and lightweight solution** rather than unnecessary architectural complexity.
+
 ---
 
 # Author
 
 **Nalivela Abhinaya**
 
-VisionAI - AI-Powered Image Quality & Defect Detection
+VisionAI — AI-Powered Image Quality & Defect Detection
