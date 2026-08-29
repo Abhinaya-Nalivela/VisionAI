@@ -1267,7 +1267,7 @@ backend/artifacts/test_features.csv
 
 ---
 
-# Privacy and External Services
+# Privacy and External Services (Not Required)
 
 VisionAI performs computer-vision processing and machine-learning inference locally.
 
