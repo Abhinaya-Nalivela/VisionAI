@@ -1,6 +1,6 @@
 # VisionAI
 
-## AI-Powered Image Quality & Defect Detection
+## AI-Powered Image Quality & Defect Detection 
 
 **Computer Vision + Machine Learning | FastAPI | React | SQLite | Docker**
 
